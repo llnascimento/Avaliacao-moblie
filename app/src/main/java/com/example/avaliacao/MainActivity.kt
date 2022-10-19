@@ -3,24 +3,44 @@ package com.example.avaliacao
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import com.example.avaliacao.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
+    lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val rollButton: Button = findViewById(R.id.roll_button)
+        val rollButton: Button = binding.rollButton
         rollButton.setOnClickListener { rollDice() }
-    }
 
+}
     private fun rollDice() {
 
         val randomInt = (1..6).random()
+        val toast = Toast.makeText(this, "O dado rolou", Toast.LENGTH_SHORT)
+        toast.show()
+        val diceImage: ImageView = findViewById(R.id.imageView)
+        // val diceImage: ImageView = binding.imageView
 
-        val resultText: TextView = findViewById(R.id.result_text)
-        resultText.text = randomInt.toString()
+         val drawableResource = when (randomInt)
+        {
+            1 -> R.drawable.dice_1
+            2 -> R.drawable.dice_2
+            3 -> R.drawable.dice_3
+            4 -> R.drawable.dice_4
+            5 -> R.drawable.dice_5
+            else -> R.drawable.dice_6
+        }
+        diceImage.setImageResource(drawableResource)
+        diceImage.contentDescription = randomInt.toString()
 
+        val resultTextView: TextView = binding.resultText
+        resultTextView.text = randomInt.toString()
     }
 }
+
